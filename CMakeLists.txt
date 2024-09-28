@@ -38,5 +38,3 @@ target_compile_options(gst
 
 target_link_directories(gst PRIVATE ${CUDAToolkit_LIBRARY_DIR} )
 target_link_libraries(gst CUDA::cublas CUDA::cublasLt)
-
-file(GENERATE OUTPUT filename CONTENT "${PROJECT_SOURCE_DIR}/util ${CUDAToolkit_INCLUDE_DIRS} ")
