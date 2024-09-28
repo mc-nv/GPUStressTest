@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.8.0)
 project(gst LANGUAGES CXX CUDA C)
 
 find_package(CUDAToolkit REQUIRED)
+find_package(Threads REQUIRED)
 
 # Set a default build type if none was specified
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build: Release/Debug/RelWithDebInfo" FORCE)
@@ -18,7 +19,10 @@ message("DEBUG_MATRIX_SIZES ")
 endif()
 
 
-include_directories( ${PROJECT_SOURCE_DIR}/util ${CUDAToolkit_INCLUDE_DIRS} )
+include_directories( 
+  ${PROJECT_SOURCE_DIR}/util 
+  # ${CUDAToolkit_INCLUDE_DIRS} 
+)
 
 add_executable(gst main.cu
     ${PROJECT_SOURCE_DIR}/util/test_args.cu
@@ -29,10 +33,12 @@ add_executable(gst main.cu
 
 set_target_properties(gst PROPERTIES CUDA_ARCHITECTURES "70;75;80;90")
 
+
 target_compile_options(gst
     PRIVATE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>: -Wall -Wextra -fno-strict-aliasing -Wno-unused-parameter -m64>
     $<$<CXX_COMPILER_ID:Clang>:-Wl,--no-undefined -Wl,--no-allow-shlib-undefined>
+    $<$<COMPILE_LANGUAGE:CUDA>:-err-no>
     $<$<CXX_COMPILER_ID:MSVC>:/Wall -m64>
     )
 
