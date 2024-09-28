@@ -38,7 +38,7 @@ target_compile_options(gst
     PRIVATE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>: -Wall -Wextra -fno-strict-aliasing -Wno-unused-parameter -m64>
     $<$<CXX_COMPILER_ID:Clang>:-Wl,--no-undefined -Wl,--no-allow-shlib-undefined>
-    $<$<COMPILE_LANGUAGE:CUDA>:-err-no>
+    $<$<COMPILE_LANGUAGE:CUDA>:--fatbin --display-error-number>
     $<$<CXX_COMPILER_ID:MSVC>:/Wall -m64>
     )
 
